@@ -22,52 +22,75 @@ Example run:
 Connecting to database prdkptdb01.internal.keepingpacetech.com  
 
 Running Query on database for vlan 66  
-IPv4 network found:  {'network': '192.168.66.128', 'gateway': '192.168.66.129', 'subnet_mask': '25'}
-IPv6 network found:  {'network': 'fd00:0:0:66b::', 'gateway': 'fd00:0:0:66b::1', 'subnet_mask': '64'}
-ipv4 IP found: None
-Running clone vm
-Checking VM status for when clone is done every 5 seconds...
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-VM is still locked
-checking vm status 217
-vm must be cloned
-Was able to write IP to IPAM
+IPv4 network found:  {'network': '192.168.66.128', 'gateway': '192.168.66.129', 'subnet_mask': '25'}  
+
+IPv6 network found:  {'network': 'fd00:0:0:66b::', 'gateway': 'fd00:0:0:66b::1', 'subnet_mask': '64'}  
+
+Running clone vm  
+
+Checking VM status for when clone is done every 5 seconds...  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+VM is still locked  
+
+checking vm status 217  
+
+vm must be cloned  
+
+Was able to write IP to IPAM  
+
 {'code': 201, 'success': True, 'message': 'Address created', 'id': '473', 'time': 0.239}
 
 ## Running script with parameters
 
-See the help for more information:
-usage: build_vm_.py [-h] [--template_id TEMPLATE_ID] [--new_vmid NEW_VMID] [--new_vm_name NEW_VM_NAME] [--ipam_section IPAM_SECTION] [--disk_size DISK_SIZE] [--add_librenms ADD_LIBRENMS]
-                    [--vlan_id VLAN_ID]
-  -h, --help            show this help message and exit
-  --template_id TEMPLATE_ID
-                        proxmox template ID to clone
-  --new_vmid NEW_VMID   VM ID of new cloned vm
-  --new_vm_name NEW_VM_NAME
-                        name of new vm
-  --ipam_section IPAM_SECTION
-                        ipam section, enter ipv4 or ipv6
-  --disk_size DISK_SIZE
-                        disk size of disk after clone
-  --add_librenms ADD_LIBRENMS
-                        add device to librenms after vm is booted. new_vm_name to be set
-  --vlan_id VLAN_ID     vlan ID assignement for VM and DB lookup
+See the help for more information:  
 
-Generally, the script should be ran as: build_vm_.py [--template_id TEMPLATE_ID] [--new_vmid NEW_VMID] [--new_vm_name NEW_VM_NAME] [--ipam_section IPAM_SECTION] [--disk_size DISK_SIZE]. 
+usage: build_vm_.py [-h] [--template_id TEMPLATE_ID] [--new_vmid NEW_VMID] [--new_vm_name NEW_VM_NAME] [--ipam_section IPAM_SECTION] [--disk_size DISK_SIZE] [--add_librenms ADD_LIBRENMS] [--vlan_id VLAN_ID]  
+
+  -h, --help show this help message and exit  
+
+  --template_id TEMPLATE_ID proxmox template ID to clone  
+
+  --new_vmid NEW_VMID VM ID of new cloned vm  
+
+  --new_vm_name NEW_VM_NAME name of new vm  
+
+  --ipam_section IPAM_SECTION ipam section, enter ipv4 or ipv6  
+  --disk_size DISK_SIZE disk size of disk after clone  
+
+  --add_librenms ADD_LIBRENMS add device to librenms after vm is booted. new_vm_name to be set  
+
+  --vlan_id VLAN_ID vlan ID assignement for VM and DB lookup  
+
+Generally, the script should be ran as: build_vm_.py [--template_id TEMPLATE_ID] [--new_vmid NEW_VMID] [--new_vm_name NEW_VM_NAME] [--ipam_section IPAM_SECTION] [--disk_size DISK_SIZE]  
 
 Once the VM is up, the device can be added to librenms with: build_vm_.py [--new_vm_name NEW_VM_NAME] [--add_librenms ADD_LIBRENMS]
 
