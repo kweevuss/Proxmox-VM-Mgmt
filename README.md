@@ -1,19 +1,19 @@
 # Proxmox-VM-Mgmt
 Perform functions in Proxmox Hypervisor. There are several main things this project expects:
 
-1. Secrets file is filled out with information. 
-2. Mysql database setup with network subnet/vlan info. This seems to be a limit of phpipam to not store some data. Future I plan to have a container ready with this database. For now a quick example of the database table:
-vlan_id | subnet | subnet_gateway | subnet_mask
----|---|---|--
-2 | 192.168.2.0 | 192.168.2.1 | 24
+1. Secrets file is filled out with information. \
+2. Mysql database setup with network subnet/vlan info. This seems to be a limit of phpipam to not store some data. Future I plan to have a container ready with this database. For now a quick example of the database table:\
+vlan_id | subnet | subnet_gateway | subnet_mask \
+---|---|---|-- \
+2 | 192.168.2.0 | 192.168.2.1 | 24 \
 
-3. A cloud init working VM template that you would like to clone
+3. A cloud init working VM template that you would like to clone \
 
 
 
 ## Goal of projects
 
-This is crafted around my personal setup. I have my network vlan information in phpipam, with some other details, such as vlan, in a mysql database. This is utilized to query the subnet, find the next avaiable IP, set it in a cloud init enabled template of a VM on a proxmox hypervisor, clone the VM, and finally set the IP of the dns hostname of the new VM. 
+This is crafted around my personal setup. I have my network vlan information in phpipam, with some other details, such as vlan, in a mysql database. This is utilized to query the subnet, find the next avaiable IP, set it in a cloud init enabled template of a VM on a proxmox hypervisor, clone the VM, and finally set the IP of the dns hostname of the new VM. \
 
 
 Example run:
