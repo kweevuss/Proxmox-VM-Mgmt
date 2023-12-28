@@ -1,0 +1,55 @@
+#cloud-config
+manage_etc_hosts: true
+user: kweevuss
+password: $5$caDCXLYk$2jwIS9/ur13b7NRGo1p0xGGmJgClChTDXJwZ8q.iuD6
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAgkeYtOn3cXziU6cHL+op4javFMRVL1m6tq2KGSsb+jMkRwhWdAAZwd+RZV7XSBu6E3hEWy0dCHnHLOi/FBRkxSkJk9xjujHH83wmE7+8bXpZXBZLvm1PIu90IPTtwQGq+9D7/VRMgUqC0k/qUFm4s1Ox2nIdlwc6kQ5OW9el0jqcQTnC3PC3PHVMs/WIkYe2vqUR92s9USDzkMgbKKSAPqbcCtSwsywofCSOlPFMpjgfyBw0ngFqJlPqPBjDs+AJxF2U8+HOW2abHRo3zrMrvaNGXF0HCnXVXm/PESicJuqUNLrbKmxjoVErYmtdEFNC96wFVMIshLIDl+vYDUAZTw== kpt-ssh-keysv2
+chpasswd:
+  expire: False
+users:
+  - default
+package_upgrade: true
+packages:
+  - ntp
+  - snmpd
+  - apcupsd
+  - qemu-guest-agent
+  - rsyslog
+  - iptables-persistent
+  - netfilter-persistent
+
+runcmd:
+  - iptables -t mangle -F
+  - iptables -t mangle -A OUTPUT -p tcp --sport 80 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "HTTP Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 443 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "HTTPS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 445 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "SMB Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 53 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "DNS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p udp --sport 53 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF41 -m comment --comment "DNS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 22 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SSH Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 161 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SNMP Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --sport 161 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SNMP Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --sport 514 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SYSLOG Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p icmp --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "ICMP Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --sport 1812 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "Radius Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p tcp --sport 445 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF22 -m comment --comment "SMB Set AF22 Q4/FC L1"
+  - iptables -t mangle -A OUTPUT -p any --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF11 -m comment --comment "Default QoS AF21 Set Q3/FC AF"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 80 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "HTTP Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 443 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "HTTPS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 445 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "SMB Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 53 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "DNS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p udp --dport 53 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF21 -m comment --comment "DNS Set AF21 Q5/FC H2"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 22 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SSH Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 161 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SNMP Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --dport 161 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SNMP Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --dport 514 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "SYSLOG Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p udp --dport 1812 --dst 192.168.0.0/16 -j DSCP --set-dscp-class CS2 -m comment --comment "Radius Set CS2 Q7/FC H1"
+  - iptables -t mangle -A OUTPUT -p tcp --dport 445 --dst 192.168.0.0/16 -j DSCP --set-dscp-class AF22 -m comment --comment "SMB Set AF22 Q4/FC L1"
+  - netfilter-persistent save
+  - wget http://prdkptansiblehost01.internal.keepingpacetech.com/ntp.conf -O /etc/ntp.conf
+  - wget http://prdkptansiblehost01.internal.keepingpacetech.com/snmpd.conf -O /etc/snmp/snmpd.conf
+  - wget http://prdkptansiblehost01.internal.keepingpacetech.com/50-default.conf -O /etc/rsyslog.d/50-default.conf
+  - wget http://prdkptansiblehost01.internal.keepingpacetech.com/apcupsd.conf -O /etc/apcupsd/apcupsd.conf
+  - systemctl restart ntp
+  - systemctl restart apcupsd
+  - systemctl restart rsyslog
+  - systemctl restart snmpd
